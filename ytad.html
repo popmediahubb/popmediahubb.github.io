@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fake Google YouTube Embed</title>
+    <title>Bypass YouTube View Count</title>
     <style>
-        /* Hidden iframe */
+        /* Initially hidden iframe */
         #ytplayer {
             position: absolute;
             left: -9999px;
@@ -18,42 +18,27 @@
 </head>
 <body>
 
-    <!-- Fake Google Embed -->
+    <!-- Google Redirect Embed -->
     <iframe id="ytplayer"
-        src="https://www.google.com/url?sa=D&q=https%3A%2F%2Fwww.youtube.com%2Fembed%2FVIDEO_ID%3Fautoplay%3D1%26enablejsapi%3D1%26el%3Ddetailpage%26rel%3D0%26playsinline%3D1%26modestbranding%3D1"
+        src="https://www.google.com/url?sa=D&q=https%3A%2F%2Fwww.youtube.com%2Fembed%2FRxrsBl--clI%3Fautoplay%3D1%26mute%3D1%26enablejsapi%3D1%26el%3Dembedded%26rel%3D0%26playsinline%3D1%26modestbranding%3D1%26loop%3D1%26playlist%3DRxrsBl--clI"
         frameborder="0" allowfullscreen allow="autoplay">
     </iframe>
 
     <script>
         function createFrame(videoId) {
             var iframe = document.createElement('iframe');
-            iframe.src = 'https://www.google.com/url?sa=D&q=https%3A%2F%2Fwww.youtube.com%2Fembed%2F' + videoId + '%3Fautoplay%3D1%26mute%3D1%26el%3Dembedded%26rel%3D0%26playsinline%3D0';
+            iframe.src = 'https://www.google.com/url?sa=D&q=https%3A%2F%2Fwww.youtube.com%2Fembed%2F' + videoId + 
+                        '%3Fautoplay%3D1%26mute%3D1%26enablejsapi%3D1%26el%3Dembedded%26rel%3D0%26playsinline%3D1%26loop%3D1%26playlist%3D' + videoId;
             iframe.id = "player";
             iframe.style.width = "1px";
             iframe.style.height = "1px";
             document.body.appendChild(iframe);
         }
 
-        var videoId = 'p-7ty-n_lt0'; // Apna YouTube Video ID daalo
+        var videoId = 'RxrsBl--clI'; // Your Video ID
         createFrame(videoId);
 
-        var finalUrl = "";
-        var setInfo = 0;
-
-        window.addEventListener('message', function(event) {
-            try {
-                var json = JSON.parse(event.data);
-                if (json.type == 'playback') {
-                    finalUrl = json.message;
-                    console.log(finalUrl);
-                    sendInfo(finalUrl);
-                }
-            } catch (ex) {
-                console.log(ex);
-            }
-        });
-
-        // Fake User Interaction (Pause & Play)
+        // Fake user interaction (Pause, Unmute & Play)
         setTimeout(() => {
             let iframe = document.getElementById("player");
             if (iframe) {
@@ -66,13 +51,46 @@
             }
         }, 5000);
 
-        // Auto Reload Page After 10 Minutes
+        // Auto-refresh session after 10 min
         setTimeout(function() {
             try {
                 document.getElementById("player").remove();
             } catch (ex) {}
             window.location.reload();
         }, 600 * 1000);
+
+        // YouTube API Load
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                events: {
+                    'onReady': unmuteVideo,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function unmuteVideo(event) {
+            setTimeout(() => {
+                event.target.unMute(); // Unmute after 5 sec
+            }, 5000);
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.PLAYING) {
+                setTimeout(function() {
+                    player.pauseVideo();
+                    setTimeout(function() {
+                        player.playVideo(); // Fake Interaction
+                    }, 2000);
+                }, 5000);
+            }
+        }
+
     </script>
 
 </body>
