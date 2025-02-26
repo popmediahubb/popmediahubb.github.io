@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart YouTube Playlist Embed</title>
+    <title>Smart YouTube Playlist Embed (Muted & Pause Trick)</title>
     <style>
         .video-container {
             position: relative;
@@ -17,33 +17,36 @@
             border: none;
         }
     </style>
+    <script>
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('ytplayer', {
+                events: {
+                    'onReady': function(event) {
+                        setTimeout(function() {
+                            player.mute(); // Mute ensure
+                            player.playVideo(); // Autoplay
+                            setTimeout(function() {
+                                player.pauseVideo(); // Pause trick
+                                setTimeout(function() {
+                                    player.playVideo(); // Resume play (Fake Interaction)
+                                }, 1500);
+                            }, 5000);
+                        }, 2000);
+                    }
+                }
+            });
+        }
+    </script>
 </head>
 <body>
 
 <div class="video-container">
     <iframe id="ytplayer"
-        src="https://www.youtube.com/embed/videoseries?list=PL8dnIgjdg-M1tTijGkpcUEIIMaHzjGH4E&autoplay=1&mute=1&rel=0&showinfo=0&modestbranding=1&playsinline=1&cc_load_policy=1&origin=https://facebook.com"
+        src="https://www.youtube.com/embed/videoseries?list=PLH8Y2KepC2_VPLrcTiWGaYYh88gGVAuVr&autoplay=1&mute=1&rel=0&showinfo=0&modestbranding=1&playsinline=1&cc_load_policy=1&origin=https://yourwebsite.com&enablejsapi=1"
         allow="autoplay; encrypted-media" allowfullscreen>
     </iframe>
 </div>
-
-<script>
-    var player;
-    function onYouTubeIframeAPIReady() {
-        player = new YT.Player('ytplayer', {
-            events: {
-                'onReady': function(event) {
-                    setTimeout(function() {
-                        event.target.pauseVideo();
-                        setTimeout(function() {
-                            event.target.playVideo(); // Fake Interaction
-                        }, 2000);
-                    }, 5000);
-                }
-            }
-        });
-    }
-</script>
 
 <script src="https://www.youtube.com/iframe_api"></script>
 
