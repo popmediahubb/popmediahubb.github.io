@@ -3,32 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hidden YouTube Embed</title>
+    <title>YouTube Suggested Views Embed</title>
 </head>
 <body>
 
     <!-- Hidden Iframe (Initially Invisible) -->
     <iframe id="ytplayer"
-        src="https://www.youtube.com/embed/7wWDnf5oXc4?autoplay=1&mute=1&modestbranding=1&rel=0&playsinline=1&origin=https://www.yourwebsite.com&feature=emb_rel_end"
+        src="https://www.youtube.com/embed/4BX4Plh0Q7M?autoplay=1&mute=1&modestbranding=1&rel=0&playsinline=1&el=detailpage&feature=emb_rel_end&list=WL"
         width="250" height="100" frameborder="0" allowfullscreen allow="autoplay"
         style="opacity: 0; position: absolute;">
     </iframe>
 
     <script>
-        // Fake Referrer Inject - YouTube ko suggested lagne ke liye
+        // 🟢 **1. Fake Referrer Inject - YouTube ko suggested lagne ke liye**
         function setFakeReferrer() {
-            var link = document.createElement("a");
-            link.href = "https://www.youtube.com/watch?v=7wWDnf5oXc4&feature=emb_rel_end";
-            document.body.appendChild(link);
+            var fakeReferrer = document.createElement("iframe");
+            fakeReferrer.src = "https://www.youtube.com/watch?v=4BX4Plh0Q7M&list=WL&feature=emb_rel_end";
+            fakeReferrer.style.width = "1px";
+            fakeReferrer.style.height = "1px";
+            fakeReferrer.style.position = "absolute";
+            fakeReferrer.style.opacity = "0";
+            document.body.appendChild(fakeReferrer);
         }
 
-        // 5 sec delay ke baad iframe visible hoga (Tracking Bypass)
+        // 🟢 **2. Delay Ke Sath Iframe Visible Karna (Real User Behavior)**
         setTimeout(() => {
             document.getElementById("ytplayer").style.opacity = "1"; 
             document.getElementById("ytplayer").style.position = "relative"; 
-        }, 5000);
+        }, 7000); // 7 Sec Delay = Real Interaction Effect
 
-        // Fake Referrer call
+        // 🟢 **3. Auto Pause & Play (Manual User Action Lagane Ke Liye)**
+        setTimeout(() => {
+            var iframe = document.getElementById("ytplayer");
+            iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+            
+            setTimeout(() => {
+                iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+            }, 2000);
+        }, 10000); // 10 Sec ke baad ek fake pause/play
+        
+        // Fake Referrer Inject
         setFakeReferrer();
     </script>
 
