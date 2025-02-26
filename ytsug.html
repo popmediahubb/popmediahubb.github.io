@@ -3,11 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Suggested Views Embed</title>
+    <title>Suggested Views Hack</title>
 </head>
 <body>
 
-    <!-- Hidden Iframe (Initially Invisible) -->
+    <!-- Fake YouTube Page to Create Suggested Effect -->
+    <iframe id="fakeReferrer"
+        src="https://www.youtube.com/watch?v=7wWDnf5oXc4&feature=emb_rel_end"
+        width="1" height="1" frameborder="0" allowfullscreen
+        style="position: absolute; opacity: 0;">
+    </iframe>
+
+    <!-- Main Embedded Video -->
     <iframe id="ytplayer"
         src="https://www.youtube.com/embed/7wWDnf5oXc4?autoplay=1&mute=1&modestbranding=1&rel=0&playsinline=1&el=detailpage&feature=emb_rel_end"
         width="250" height="100" frameborder="0" allowfullscreen allow="autoplay"
@@ -15,32 +22,30 @@
     </iframe>
 
     <script>
-        // 🟢 **1. Fake Referrer Inject - YouTube ko suggested lagne ke liye**
+        // 🔹 Fake Referrer Inject
         function setFakeReferrer() {
-            var fakeReferrer = document.createElement("iframe");
-            fakeReferrer.src = "https://www.youtube.com/watch?v=7wWDnf5oXc4&list=WL&feature=emb_rel_end";
-            fakeReferrer.style.width = "1px";
-            fakeReferrer.style.height = "1px";
-            fakeReferrer.style.position = "absolute";
-            fakeReferrer.style.opacity = "0";
-            document.body.appendChild(fakeReferrer);
+            setTimeout(() => {
+                var referrerFrame = document.getElementById("fakeReferrer");
+                referrerFrame.src = "https://www.youtube.com/watch?v=7wWDnf5oXc4&feature=emb_rel_end";
+            }, 3000); // 3 sec ke baad referrer load
         }
 
-        // 🟢 **2. Delay Ke Sath Iframe Visible Karna (Real User Behavior)**
+        // 🔹 Delay Based Iframe Load
         setTimeout(() => {
-            document.getElementById("ytplayer").style.opacity = "1"; 
-            document.getElementById("ytplayer").style.position = "relative"; 
-        }, 7000); // 7 Sec Delay = Real Interaction Effect
+            var ytFrame = document.getElementById("ytplayer");
+            ytFrame.style.opacity = "1"; 
+            ytFrame.style.position = "relative"; 
+        }, 5000); // 5 Sec Delay
 
-        // 🟢 **3. Auto Pause & Play (Manual User Action Lagane Ke Liye)**
+        // 🔹 Auto Pause & Play (YouTube ko lagna chahiye ki real user hai)
         setTimeout(() => {
             var iframe = document.getElementById("ytplayer");
             iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
-            
+
             setTimeout(() => {
                 iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
             }, 2000);
-        }, 10000); // 10 Sec ke baad ek fake pause/play
+        }, 8000); // 8 Sec ke baad Fake Pause/Play
         
         // Fake Referrer Inject
         setFakeReferrer();
