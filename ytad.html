@@ -3,93 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bypass YouTube View Count</title>
+    <title>Hidden YouTube Embed</title>
     <style>
-        /* Initially hidden iframe */
-        #ytplayer {
+        /* Hidden div */
+        #videoContainer {
+            width: 250px;
+            height: 100px;
+            overflow: hidden;
             position: absolute;
             left: -9999px;
-            width: 1px;
-            height: 1px;
-            opacity: 0.01;
             visibility: hidden;
         }
     </style>
 </head>
 <body>
 
-    <!-- Google Redirect Embed -->
-    <iframe id="ytplayer"
-        src="https://www.google.com/url?sa=D&q=https%3A%2F%2Fwww.youtube.com%2Fembed%2FRxrsBl--clI%3Fautoplay%3D1%26mute%3D1%26enablejsapi%3D1%26el%3Dembedded%26rel%3D0%26playsinline%3D1%26modestbranding%3D1%26loop%3D1%26playlist%3DRxrsBl--clI"
-        frameborder="0" allowfullscreen allow="autoplay">
-    </iframe>
+    <!-- Hidden Video Div -->
+    <div id="videoContainer">
+        <iframe id="ytplayer" frameborder="0" allowfullscreen allow="autoplay"></iframe>
+    </div>
 
     <script>
-        function createFrame(videoId) {
-            var iframe = document.createElement('iframe');
+        var videoId = 'RxrsBl--clI'; // YT Video ID
+
+        function loadVideo() {
+            var iframe = document.getElementById("ytplayer");
             iframe.src = 'https://www.google.com/url?sa=D&q=https%3A%2F%2Fwww.youtube.com%2Fembed%2F' + videoId + 
-                        '%3Fautoplay%3D1%26mute%3D1%26enablejsapi%3D1%26el%3Dembedded%26rel%3D0%26playsinline%3D1%26loop%3D1%26playlist%3D' + videoId;
-            iframe.id = "player";
-            iframe.style.width = "1px";
-            iframe.style.height = "1px";
-            document.body.appendChild(iframe);
+                         '%3Fautoplay%3D1%26mute%3D1%26enablejsapi%3D1%26el%3Dembedded%26rel%3D0%26playsinline%3D1%26modestbranding%3D1%26loop%3D1%26playlist%3D' + videoId;
+            iframe.width = "250";
+            iframe.height = "100";
+
+            // Show div for 2 sec then hide again
+            setTimeout(() => {
+                document.getElementById("videoContainer").style.left = "10px";
+                document.getElementById("videoContainer").style.visibility = "visible";
+
+                setTimeout(() => {
+                    document.getElementById("videoContainer").style.left = "-9999px";
+                    document.getElementById("videoContainer").style.visibility = "hidden";
+                }, 2000);
+            }, 5000);
         }
 
-        var videoId = 'RxrsBl--clI'; // Your Video ID
-        createFrame(videoId);
+        loadVideo();
 
-        // Fake user interaction (Pause, Unmute & Play)
-        setTimeout(() => {
-            let iframe = document.getElementById("player");
-            if (iframe) {
-                iframe.style.left = "10px"; 
-                iframe.style.visibility = "visible"; 
-                setTimeout(() => {
-                    iframe.style.left = "-9999px"; 
-                    iframe.style.visibility = "hidden"; 
-                }, 3000);
-            }
-        }, 5000);
-
-        // Auto-refresh session after 10 min
-        setTimeout(function() {
-            try {
-                document.getElementById("player").remove();
-            } catch (ex) {}
-            window.location.reload();
-        }, 600 * 1000);
-
-        // YouTube API Load
+        // YouTube API
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName('script')[0];
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
         function onYouTubeIframeAPIReady() {
-            player = new YT.Player('player', {
+            player = new YT.Player('ytplayer', {
                 events: {
-                    'onReady': unmuteVideo,
-                    'onStateChange': onPlayerStateChange
+                    'onReady': function(event) {
+                        setTimeout(() => {
+                            event.target.unMute(); // Unmute after 5 sec
+                        }, 5000);
+                    },
+                    'onStateChange': function(event) {
+                        if (event.data === YT.PlayerState.PLAYING) {
+                            setTimeout(() => {
+                                player.pauseVideo();
+                                setTimeout(() => {
+                                    player.playVideo(); // Fake Interaction
+                                }, 2000);
+                            }, 5000);
+                        }
+                    }
                 }
             });
         }
 
-        function unmuteVideo(event) {
-            setTimeout(() => {
-                event.target.unMute(); // Unmute after 5 sec
-            }, 5000);
-        }
-
-        function onPlayerStateChange(event) {
-            if (event.data === YT.PlayerState.PLAYING) {
-                setTimeout(function() {
-                    player.pauseVideo();
-                    setTimeout(function() {
-                        player.playVideo(); // Fake Interaction
-                    }, 2000);
-                }, 5000);
-            }
-        }
+        // Auto-refresh session after 10 min
+        setTimeout(function() {
+            try {
+                document.getElementById("ytplayer").remove();
+            } catch (ex) {}
+            window.location.reload();
+        }, 600 * 1000);
 
     </script>
 
