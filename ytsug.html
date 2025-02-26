@@ -9,7 +9,7 @@
 
     <!-- Hidden Iframe (Initially Invisible) -->
     <iframe id="ytplayer"
-        src="https://www.youtube.com/embed/4BX4Plh0Q7M?autoplay=1&mute=1&modestbranding=1&rel=0&playsinline=1&el=detailpage&feature=emb_rel_end&list=WL"
+        src="https://www.youtube.com/embed/7wWDnf5oXc4?autoplay=1&mute=1&modestbranding=1&rel=0&playsinline=1&el=detailpage&feature=emb_rel_end&list=WL"
         width="250" height="100" frameborder="0" allowfullscreen allow="autoplay"
         style="opacity: 0; position: absolute;">
     </iframe>
@@ -18,7 +18,7 @@
         // 🟢 **1. Fake Referrer Inject - YouTube ko suggested lagne ke liye**
         function setFakeReferrer() {
             var fakeReferrer = document.createElement("iframe");
-            fakeReferrer.src = "https://www.youtube.com/watch?v=4BX4Plh0Q7M&list=WL&feature=emb_rel_end";
+            fakeReferrer.src = "https://www.youtube.com/watch?v=7wWDnf5oXc4&list=WL&feature=emb_rel_end";
             fakeReferrer.style.width = "1px";
             fakeReferrer.style.height = "1px";
             fakeReferrer.style.position = "absolute";
