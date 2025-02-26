@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hidden YouTube Embed</title>
+</head>
+<body>
+
+    <!-- Fake Referrer Inject -->
+    <meta http-equiv="refresh" content="0; url=https://www.youtube.com/watch?v=7wWDnf5oXc4&feature=emb_rel_end">
+
+    <!-- Hidden Iframe -->
+    <iframe id="ytplayer"
+        src="https://www.youtube.com/embed/7wWDnf5oXc4?autoplay=1&mute=1&modestbranding=1&rel=0&playsinline=1&origin=https://facebook.com&feature=emb_rel_end"
+        width="250" height="100" frameborder="0" allowfullscreen allow="autoplay"
+        style="opacity: 0; position: absolute;">
+    </iframe>
+
+    <script>
+        // 5 sec delay ke baad iframe show hoga (YouTube tracking bypass hone ke liye)
+        setTimeout(() => {
+            document.getElementById("ytplayer").style.opacity = "1"; 
+            document.getElementById("ytplayer").style.position = "relative"; 
+        }, 5000);
+    </script>
+
+</body>
+</html>
