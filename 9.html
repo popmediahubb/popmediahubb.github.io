@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Facebook Video Embed</title>
+</head>
+<body>
+
+  <div id="playerif" style="position: relative">
+    <div id="infoi" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 10;"></div>
+    
+    <div id="fbvideo" class="fb-video"
+         data-href="https://www.facebook.com/100088583034595/videos/985462216991196"
+         data-width="500"
+         data-allowfullscreen="true"
+         data-show-text="false"
+         data-autoplay="false">
+    </div>
+  </div>
+
+  <button onclick="startvideo()" style="margin-top:20px;">Start Video</button>
+
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous"
+    src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v19.0"
+    nonce="abc123"></script>
+
+  <script>
+    let my_video_player = null;
+
+    window.fbAsyncInit = function () {
+      FB.init({
+        xfbml: true,
+        version: 'v19.0'
+      });
+
+      FB.Event.subscribe('xfbml.ready', function (msg) {
+        if (msg.type === 'video') {
+          my_video_player = msg.instance;
+        }
+      });
+    };
+
+    function startvideo() {
+      if (my_video_player) {
+        my_video_player.play();
+        console.log("Video started");
+      } else {
+        console.log("Video player not ready yet");
+      }
+    }
+
+    // Optional auto refresh
+    setInterval(() => {
+      location.reload();
+    }, 12000);
+  </script>
+
+</body>
+</html>
