@@ -1,13 +1,61 @@
-<script>window.fbAsyncInit = function() {
-  FB.init({
-    xfbml      : true,
-    version    : 'v3.2'
-  });
-  }; (function(d, s, id){
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) {return;}
-    js = d.createElement(s); js.id = id;
-    js.src = "https://connect.facebook.net/en_US/sdk.js";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));</script>
-<div class="fb-video" data-href="https://www.facebook.com/video.php?v=10152795258318553" data-width="500" data-allowfullscreen="true"></div>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Facebook Video Play using play() Function</title>
+</head>
+<body>
+
+<!-- Facebook root div (required) -->
+<div id="fb-root"></div>
+
+<!-- Facebook SDK script -->
+<script async defer crossorigin="anonymous"
+  src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v19.0"></script>
+
+<!-- Video Embed -->
+<div class="fb-video" 
+     data-href="https://www.facebook.com/video.php?v=10152795258318553" 
+     data-width="500"
+     data-allowfullscreen="true"
+     data-autoplay="false"
+     id="myFbVideo">
+</div>
+
+<!-- Play button -->
+<button onclick="playFBVideo()" style="margin-top: 20px; padding: 10px 20px; font-size: 16px;">
+  Play Facebook Video
+</button>
+
+<script>
+  var fbPlayerInstance;
+
+  // Jab Facebook SDK ready ho jaye
+  window.fbAsyncInit = function() {
+    FB.init({
+      xfbml      : true,
+      version    : 'v19.0'
+    });
+
+    // Jab embedded video ready ho jaye
+    FB.Event.subscribe('xfbml.ready', function(msg) {
+      if (msg.type === 'video') {
+        fbPlayerInstance = msg.instance;
+        console.log('FB video player instance ready ho gaya!');
+      }
+    });
+  };
+
+  // Play video function
+  function playFBVideo() {
+    if (fbPlayerInstance) {
+      fbPlayerInstance.play();
+    } else {
+      console.log("Video abhi tak ready nahi hai, thoda wait karo ya page reload karo.");
+    }
+  }
+</script>
+
+</body>
+</html>
