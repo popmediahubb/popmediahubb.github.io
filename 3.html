@@ -15,12 +15,12 @@
     ></div>
   </div>
   <br /><br />
-  <a onclick="startvideo()" href="#"></a>
+  <a onclick="startvideo()" href="#">Start Video</a>
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     function setRandomVideoLink() {
-      var videoLinks = ["https://facebook.com/watch?v=985462216991196"];
+      var videoLinks = ["https://facebook.com/watch?v=1225759359578267"];
       var randomIndex = Math.floor(Math.random() * videoLinks.length);
       console.log(randomIndex);
       var fbVideoElement = document.getElementById("fbvideo");
@@ -50,6 +50,7 @@
     FB.Event.subscribe("xfbml.ready", function (msg) {
       if (msg.type === "video") {
         msg.instance.play();
+        msg.instance.unmute();  // Unmute the video for audio playback
         my_video_player = msg.instance;
       }
     });
