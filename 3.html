@@ -50,7 +50,7 @@
     FB.Event.subscribe("xfbml.ready", function (msg) {
       if (msg.type === "video") {
         msg.instance.play();
-        msg.instance.unmute();  // Unmute the video for audio playback
+      
         my_video_player = msg.instance;
       }
     });
