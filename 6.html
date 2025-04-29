@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head> 
+    <meta charset="UTF-8" />
+    <title>Smart Facebook Video Embed</title>
+  </head>
+  <body>
+    <!-- Facebook SDK Load -->
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous"
+      src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0"
+      nonce="xyz"></script>
+
+    <!-- Video Container -->
+    <div class="fb-video"
+      id="fbvideo"
+      data-href="https://www.facebook.com/watch/?v=1068703871971400"
+      data-width="500"
+      data-autoplay="true"
+      data-allowfullscreen="true"
+      data-show-text="false"
+      data-mute="true"
+      style="margin-top: 20px;">
+    </div>
+
+    <script>
+      var my_video_player = null;
+
+      // Facebook SDK init hone ke baad
+      window.fbAsyncInit = function () {
+        FB.init({
+          xfbml: true,
+          version: 'v18.0'
+        });
+
+        // Video ready hone pe play() function
+        FB.Event.subscribe('xfbml.ready', function (msg) {
+          if (msg.type === 'video') {
+            my_video_player = msg.instance;
+
+            // Random delay to simulate human behavior
+            const randomDelay = Math.floor(Math.random() * 2000) + 1000; // 1-3 seconds delay
+            setTimeout(() => {
+              my_video_player.play();
+            }, randomDelay);
+          }
+        });
+      };
+
+      // Intersection Observer to check if video is visible
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && my_video_player) {
+            // Delay before playing when video is visible
+            const randomDelay = Math.random() * 1500 + 1000; // 1-2.5 sec delay
+            setTimeout(() => {
+              my_video_player.play();
+            }, randomDelay);
+          }
+        });
+      }, { threshold: 0.7 }); // 70% visibility required for autoplay
+
+      observer.observe(document.getElementById("fbvideo"));
+    </script>
+  </body>
+</html>
