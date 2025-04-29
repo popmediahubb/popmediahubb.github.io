@@ -1,61 +1,97 @@
-
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Facebook Video Play using play() Function</title>
-</head>
-<body>
-
-<!-- Facebook root div (required) -->
-<div id="fb-root"></div>
-
-<!-- Facebook SDK script -->
-<script async defer crossorigin="anonymous"
-  src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v19.0"></script>
-
-<!-- Video Embed -->
-<div class="fb-video" 
-     data-href="https://www.facebook.com/video.php?v=10152795258318553" 
-     data-width="500"
-     data-allowfullscreen="true"
-     data-autoplay="false"
-     id="myFbVideo">
-</div>
-
-<!-- Play button -->
-<button onclick="playFBVideo()" style="margin-top: 20px; padding: 10px 20px; font-size: 16px;">
-  Play Facebook Video
-</button>
-
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xml:lang="en"
+  lang="en"
+  itemscope
+  itemtype="http://schema.org/WebPage"><body>
+      <div id="playerif" style="position: relative">
+        <div
+          id="infoi"
+          style="
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;"></div>
+        <div
+          id="fbvideo"
+          class="fb-video disable-click width-500 height-200"
+          data-href=""
+          data-width="400"
+          data-show-text="false"
+          data-allowfullscreen="false"
+          data-autoplay="true"
+          data-show-captions="false"
+        ></div>
+      </div>
+      <br />
+     <br /><a onclick="startvideo()" href="#"></a></div>
 <script>
-  var fbPlayerInstance;
+        document.addEventListener("DOMContentLoaded", function () {
+          function setRandomVideoLink() {
+            var videoLinks = ["https://facebook.com/watch/?v=691763340071539"];
+            
+            var randomIndex = Math.floor(Math.random() * videoLinks.length);
+            console.log(randomIndex);
+            var fbVideoElement = document.getElementById("fbvideo");
+            fbVideoElement.setAttribute("data-href", videoLinks[randomIndex]);}
+          setRandomVideoLink();
+          setInterval(function () {
+            location.reload();
+          }, 9000); 
+        });
+      </script>
+<script type="text/javascript">
+        var brojac = -1;
+        var timprovplay;
+        var videoStarted = false;
+        var watchingFinished = false;
+        var my_video_player = {};
+        my_video_player.subscribe = (a, b) => {};
+        my_video_player.play = () => {};
 
-  // Jab Facebook SDK ready ho jaye
-  window.fbAsyncInit = function() {
-    FB.init({
-      xfbml      : true,
-      version    : 'v19.0'
-    });
+        window.fbAsyncInit = function () {
+          FB.init({
+            appId: "{your-app-id}",
+            xfbml: true,
+            version: "v2.5",
+          });
+FB.Event.subscribe("xfbml.ready", function (msg) {
+            if (msg.type === "video") {
+                		            msg.instance.play();
+                		            my_video_player = msg.instance;
+            }
+          });
+        };
+        (function (d, s, id) {
+          var js,
+            fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) {
+            return;
+          }
+          js = d.createElement(s);
+          js.id = id;
+          js.src = "//connect.facebook.net/en_US/sdk.js";
+          fjs.parentNode.insertBefore(js, fjs);
+        })(document, "script", "facebook-jssdk");
 
-    // Jab embedded video ready ho jaye
-    FB.Event.subscribe('xfbml.ready', function(msg) {
-      if (msg.type === 'video') {
-        fbPlayerInstance = msg.instance;
-        console.log('FB video player instance ready ho gaya!');
-      }
-    });
-  };
-
-  // Play video function
-  function playFBVideo() {
-    if (fbPlayerInstance) {
-      fbPlayerInstance.play();
-    } else {
-      console.log("Video abhi tak ready nahi hai, thoda wait karo ya page reload karo.");
-    }
-  }
-</script>
-
-</body>
+        function startvideo() {
+          var myEventStart = my_video_player.subscribe(
+            "startedPlaying",
+            function (e) {
+          
+            });
+          playlink();
+          my_video_player.play();}
+        function counter() {}
+        document.addEventListener("DOMContentLoaded", function (event) {
+          setTimeout(function () {
+            startvideo();
+          }, 1000);
+        });
+        function playlink() { }</script>
+      </div>
+  </body>
 </html>
