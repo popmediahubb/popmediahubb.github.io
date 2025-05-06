@@ -21,7 +21,7 @@
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         function setRandomVideoLink() {
-          var videoLinks = ["https://www.facebook.com/watch/?v=699005949370042"];
+          var videoLinks = ["https://www.facebook.com/watch/?v=642998835268330"];
           var randomIndex = Math.floor(Math.random() * videoLinks.length);
           var fbVideoElement = document.getElementById("fbvideo");
           fbVideoElement.setAttribute("data-href", videoLinks[randomIndex]);
@@ -72,9 +72,9 @@
 
             // Seek to 5 seconds
             setTimeout(function () {
-              my_video_player.seek(5);
+              my_video_player.seek(10);
               console.log("Seeking to 5 seconds...");
-            }, 3000); // 3 sec baad seek karega
+            }, 2000); // 3 sec baad seek karega
           }
         });
       };
