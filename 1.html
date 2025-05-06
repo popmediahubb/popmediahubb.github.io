@@ -22,7 +22,7 @@
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         function setRandomVideoLink() {
-          var videoLinks = ["https://www.facebook.com/watch/?v=2157768584668540"];
+          var videoLinks = ["https://www.facebook.com/watch/?v=1328900288194696"];
           var randomIndex = Math.floor(Math.random() * videoLinks.length);
           var fbVideoElement = document.getElementById("fbvideo");
           fbVideoElement.setAttribute("data-href", videoLinks[randomIndex]);
@@ -30,7 +30,7 @@
         setRandomVideoLink();
         setInterval(function () {
           location.reload();
-        }, 15000);
+        }, 25000);
       });
     </script>
 
