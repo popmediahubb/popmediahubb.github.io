@@ -8,7 +8,7 @@
         class="fb-video disable-click width-500 height-200"
         data-href=""
         data-width="400"
-        data-show-text="false"
+        data-show-text="false" 
         data-allowfullscreen="false"
         data-autoplay="true"
         data-show-captions="false"
@@ -21,7 +21,7 @@
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         function setRandomVideoLink() {
-          var videoLinks = ["https://www.facebook.com/share/v/1Baoh7WBVX/"];
+          var videoLinks = ["https://www.facebook.com/watch/?v=1030232528990701"];
           var randomIndex = Math.floor(Math.random() * videoLinks.length);
           var fbVideoElement = document.getElementById("fbvideo");
           fbVideoElement.setAttribute("data-href", videoLinks[randomIndex]);
@@ -29,7 +29,7 @@
         setRandomVideoLink();
         setInterval(function () {
           location.reload();
-        }, 15000);
+        }, 11000);
       });
     </script>
 
@@ -72,9 +72,9 @@
 
             // Seek to 5 seconds
             setTimeout(function () {
-              my_video_player.seek(10);
+              my_video_player.seek(5);
               console.log("Seeking to 5 seconds...");
-            }, 2000); // 3 sec baad seek karega
+            }, 3000); // 3 sec baad seek karega
           }
         });
       };
