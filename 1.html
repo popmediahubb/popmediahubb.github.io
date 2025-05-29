@@ -2,31 +2,30 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Facebook Video With Sound</title>
+    <title>Facebook Video with Sound</title>
+    <style>
+      #infoi {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 10;
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        text-align: center;
+        line-height: 200px;
+        font-size: 20px;
+        cursor: pointer;
+      }
+    </style>
   </head>
   <body>
-    <div id="playerif" style="position: relative">
-      <!-- Overlay for manual click -->
-      <div
-        id="infoi"
-        style="
-          width: 100%;
-          height: 100%;
-          position: absolute;
-          top: 0;
-          left: 0;
-          z-index: 10;
-          background: rgba(0, 0, 0, 0.5);
-          color: white;
-          text-align: center;
-          line-height: 200px;
-          cursor: pointer;"
-        onclick="startvideo()"
-      >
-        🔊 Click to Play Video with Sound
-      </div>
+    <div id="playerif" style="position: relative; width: 400px; height: 200px;">
+      <!-- 🔲 Overlay for Click -->
+      <div id="infoi" onclick="startvideo()">🔊 Click to Play Video with Sound</div>
 
-      <!-- Facebook Video Embed -->
+      <!-- 📹 Facebook Video Embed -->
       <div
         id="fbvideo"
         class="fb-video"
@@ -34,19 +33,19 @@
         data-width="400"
         data-show-text="false"
         data-allowfullscreen="true"
-        data-autoplay="false"
+        data-autoplay="true"
         data-show-captions="false"
       ></div>
     </div>
 
-    <!-- Facebook SDK -->
+    <!-- 🌐 Facebook SDK -->
     <div id="fb-root"></div>
     <script>
       var my_video_player = {};
 
       window.fbAsyncInit = function () {
         FB.init({
-          appId: "YOUR_APP_ID", // Optional
+          appId: "YOUR_APP_ID", // Chaaho toh hata bhi sakte ho
           xfbml: true,
           version: "v2.5",
         });
@@ -54,6 +53,9 @@
         FB.Event.subscribe("xfbml.ready", function (msg) {
           if (msg.type === "video") {
             my_video_player = msg.instance;
+
+            // Optionally auto play muted (browser will mute it)
+            my_video_player.play();
           }
         });
       };
@@ -61,13 +63,26 @@
       function startvideo() {
         if (my_video_player && typeof my_video_player.play === "function") {
           my_video_player.play();
+
+          // 🔇 Agar muted hai, to awaaz chalu karo
+          setTimeout(() => {
+            if (my_video_player.isMuted && my_video_player.isMuted()) {
+              try {
+                my_video_player.unmute();
+                console.log("✅ Video unmuted");
+              } catch (err) {
+                console.log("❌ Browser blocked unmute without user interaction");
+              }
+            }
+          }, 500);
         }
 
-        // Hide overlay after click
-        document.getElementById("infoi").style.display = "none";
+        // 🧽 Overlay hata do
+        var overlay = document.getElementById("infoi");
+        if (overlay) overlay.style.display = "none";
       }
 
-      // Load Facebook SDK
+      // SDK load
       (function (d, s, id) {
         var js,
           fjs = d.getElementsByTagName(s)[0];
