@@ -63,6 +63,9 @@ FB.Event.subscribe("xfbml.ready", function (msg) {
             if (msg.type === "video") {
                 		            msg.instance.play();
                 		            my_video_player = msg.instance;
+                		            msg.instance.unmute();
+
+              
             }
           });
         };
