@@ -12,8 +12,8 @@
     // 👇 Yahan apna Facebook access token daal
     const accessToken = 'EAAIBQau7QNgBOZCGE5EIJQkPc01aS2iWsCtXmDANm8h1FKQNrOuYtRvaTzwut7ZCbiTFgm6CxetMCaIlHUGZB0n144eghsL3cFjpe59FDlgrMW9IE9MHutQ7ilnDFx2NShSoZBXyvpOo1XhqobynZAwDHSUyZBC7QZAoHNwZA4qTAUhW24hYM9XgSUYHivc6G7s5hFGcTd2PsAvYg6JZByhgv6X63YAZDZD';
 
-    // 👇 Yahan apna Facebook video ID daal
-    const videoId = 'https://www.facebook.com/100083394168132/videos/10019065451487891';
+    // 👇 Yahan sirf video ID daal (poora URL nahi)
+    const videoId = '10019065451487891';
 
     // Facebook Graph API call
     fetch(`https://graph.facebook.com/v20.0/${videoId}?fields=views,post_views&access_token=${accessToken}`)
