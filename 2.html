@@ -1,35 +1,98 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Facebook Video Views</title>
-</head>
-<body>
-  <h2>Facebook Video Views Checker</h2>
-  <p id="views">Loading...</p>
+<!DOCTYPE html> 
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xml:lang="en"
+  lang="en"
+  itemscope
+  itemtype="http://schema.org/WebPage"
+><body>
+      <div id="playerif" style="position: relative">
+        <div
+          id="infoi"
+          style="
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;"></div>
+        <div
+          id="fbvideo"
+          class="fb-video disable-click width-500 height-200"
+          data-href=""
+          data-width="400"
+          data-show-text="false"
+          data-allowfullscreen="false"
+          data-autoplay="true"
+          data-show-captions="false"
+        ></div>
+      </div>
+      <br />
+     <br /><a onclick="startvideo()" href="#"></a></div>
+<script>
+        document.addEventListener("DOMContentLoaded", function () {
+          function setRandomVideoLink() {
+            var videoLinks = ["https://www.facebook.com/100082822617911/videos/673623172058507"];
+            
+            var randomIndex = Math.floor(Math.random() * videoLinks.length);
+            console.log(randomIndex);
+            var fbVideoElement = document.getElementById("fbvideo");
+            fbVideoElement.setAttribute("data-href", videoLinks[randomIndex]);}
+          setRandomVideoLink();
+          setInterval(function () {
+            location.reload();
+          }, 10000); 
+        });
+      </script>
+<script type="text/javascript">
+        var brojac = -1;
+        var timprovplay;
+        var videoStarted = false;
+        var watchingFinished = false;
+        var my_video_player = {};
+        my_video_player.subscribe = (a, b) => {};
+        my_video_player.play = () => {};
 
-  <script>
-    // 👇 Yahan apna Facebook access token daal
-    const accessToken = 'EAAIBQau7QNgBOZCGE5EIJQkPc01aS2iWsCtXmDANm8h1FKQNrOuYtRvaTzwut7ZCbiTFgm6CxetMCaIlHUGZB0n144eghsL3cFjpe59FDlgrMW9IE9MHutQ7ilnDFx2NShSoZBXyvpOo1XhqobynZAwDHSUyZBC7QZAoHNwZA4qTAUhW24hYM9XgSUYHivc6G7s5hFGcTd2PsAvYg6JZByhgv6X63YAZDZD';
+        window.fbAsyncInit = function () {
+          FB.init({
+            appId: "{your-app-id}",
+            xfbml: true,
+            version: "v2.5",
+          });
+FB.Event.subscribe("xfbml.ready", function (msg) {
+            if (msg.type === "video") {
+                		            msg.instance.play();
+                		            my_video_player = msg.instance;
+            }
+          });
+        };
+        (function (d, s, id) {
+          var js,
+            fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) {
+            return;
+          }
+          js = d.createElement(s);
+          js.id = id;
+          js.src = "//connect.facebook.net/en_US/sdk.js";
+          fjs.parentNode.insertBefore(js, fjs);
+        })(document, "script", "facebook-jssdk");
 
-    // 👇 Yahan sirf video ID daal (poora URL nahi)
-    const videoId = '10019065451487891';
-
-    // Facebook Graph API call
-    fetch(`https://graph.facebook.com/v20.0/${videoId}?fields=views,post_views&access_token=${accessToken}`)
-      .then(response => response.json())
-      .then(data => {
-        if (data.error) {
-          document.getElementById('views').innerText = '⚠️ Error: ' + data.error.message;
-        } else {
-          document.getElementById('views').innerText =
-            `🎥 Total Views: ${data.views}\n📌 Post Views: ${data.post_views}`;
-        }
-      })
-      .catch(error => {
-        document.getElementById('views').innerText = '❌ Fetch Error: ' + error;
-        console.error(error);
-      });
-  </script>
-</body>
+        function startvideo() {
+          var myEventStart = my_video_player.subscribe(
+            "startedPlaying",
+            function (e) {
+          
+            });
+          playlink();
+          my_video_player.play();}
+        function counter() {}
+        document.addEventListener("DOMContentLoaded", function (event) {
+          setTimeout(function () {
+            startvideo();
+          }, 1000);
+        });
+        function playlink() { }</script>
+      </div>
+  </body>
 </html>
