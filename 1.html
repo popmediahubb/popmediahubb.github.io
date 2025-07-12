@@ -6,11 +6,13 @@
   <body>
     <div
       class="fb-video"
-      data-href="https://facebook.com/watch?v=1236007101336546"
+      data-href="https://facebook.com/watch?v=1218394276201788"
       data-width="500"
       data-height="280"
       data-allowfullscreen="true"
+      data-autoplay="true"
       data-show-text="false"
+      data-show-captions="false"
       data-playsinline="true"
       id="fbvideo"
     ></div>
@@ -29,19 +31,16 @@
           if (msg.type === 'video') {
             my_video_player = msg.instance;
 
-            // Auto mute and play
-            my_video_player.mute();
+            // Auto play
             my_video_player.play();
 
-            // Seek to 2 seconds
-            setTimeout(function () {
-              my_video_player.seek(2);
-            }, 3000); // 2 sec delay
+            // Auto mute
+            my_video_player.mute();
 
-            // Reload page after 8 seconds
+            // Seek to 10 seconds after short delay
             setTimeout(function () {
-              location.reload();
-            }, 8000); // 8 sec me page reload hoga
+              my_video_player.seek(10);
+            }, 3000); // wait for 3 seconds to ensure player is ready
           }
         });
       };
