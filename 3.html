@@ -3,7 +3,6 @@
   <head>
   </head>
   <body>
-    <!-- Facebook Video Embed Div -->
     <div
       class="fb-video"
       data-href="https://www.facebook.com/watch/?v=730501916574836"
@@ -17,13 +16,12 @@
       id="fbvideo"
     ></div>
 
-    <!-- Script to control playback -->
     <script>
       var my_video_player = {};
 
       window.fbAsyncInit = function () {
         FB.init({
-          appId: '1234567890', // ← yahan apna Facebook App ID daalein
+          appId: '{your-app-id}',
           xfbml: true,
           version: 'v2.5',
         });
@@ -32,7 +30,7 @@
           if (msg.type === 'video') {
             my_video_player = msg.instance;
 
-            // Auto play and mute
+           // Auto play and mute
             my_video_player.play();
             my_video_player.mute();
 
@@ -41,15 +39,16 @@
               my_video_player.seek(10);
             }, 3000); // 3 sec ke baad 10 sec se start kare
 
-            // 4 sec baad pause
+  // 4 sec baad pause
             setTimeout(function () {
               my_video_player.pause();
             }, 7000); // 3 sec + 4 sec = 7 sec
-
-            // 2 sec ke baad dubara play
+ // 2 sec ke baad dubara play
             setTimeout(function () {
               my_video_player.play();
             }, 9000); // 7 sec + 2 sec = 9 sec
+
+            
           }
         });
       };
