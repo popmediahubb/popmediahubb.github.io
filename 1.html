@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Auto Control Facebook Video</title>
   </head>
   <body>
     <div
       class="fb-video"
-      data-href="https://facebook.com/watch?v=1218394276201788"
+      data-href="https://www.facebook.com/watch/?v=1218394276201788"
       data-width="500"
       data-height="280"
       data-allowfullscreen="true"
@@ -22,7 +21,7 @@
 
       window.fbAsyncInit = function () {
         FB.init({
-          appId: '{your-app-id}', // ← yahan apna Facebook App ID daalein
+          appId: '{your-app-id}', // apna app id daal lena
           xfbml: true,
           version: 'v2.5',
         });
@@ -31,21 +30,34 @@
           if (msg.type === 'video') {
             my_video_player = msg.instance;
 
-            // Auto play
+            // Auto play and mute
             my_video_player.play();
-
-            // Auto mute
             my_video_player.mute();
 
-            // Seek to 10 seconds after short delay
+            // 3 sec baad 10 sec pe seek kare
             setTimeout(function () {
               my_video_player.seek(10);
-            }, 3000); // wait for 3 seconds to ensure player is ready
+            }, 3000);
+
+            // 7 sec baad pause kare
+            setTimeout(function () {
+              my_video_player.pause();
+            }, 7000);
+
+            // 9 sec pe wapas play kare
+            setTimeout(function () {
+              my_video_player.play();
+            }, 9000);
+
+            // 20 sec baad page reload ho
+            setTimeout(function () {
+              location.reload();
+            }, 15000);
           }
         });
       };
 
-      // Load Facebook SDK
+      // Facebook SDK load kare
       (function (d, s, id) {
         var js,
           fjs = d.getElementsByTagName(s)[0];
@@ -57,4 +69,4 @@
       })(document, 'script', 'facebook-jssdk');
     </script>
   </body>
-</html>
+</
