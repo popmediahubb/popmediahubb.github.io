@@ -21,7 +21,7 @@
 
       window.fbAsyncInit = function () {
         FB.init({
-          appId: '{your-app-id}',
+          appId: '{your-app-id}', // apna app id daal lena
           xfbml: true,
           version: 'v2.5',
         });
@@ -30,30 +30,34 @@
           if (msg.type === 'video') {
             my_video_player = msg.instance;
 
-           // Auto play and mute
+            // Auto play and mute
             my_video_player.play();
             my_video_player.mute();
 
-            // Seek to 10 seconds after short delay
+            // 3 sec baad 10 sec pe seek kare
             setTimeout(function () {
               my_video_player.seek(10);
-            }, 3000); // 3 sec ke baad 10 sec se start kare
+            }, 3000);
 
-  // 4 sec baad pause
+            // 7 sec baad pause kare
             setTimeout(function () {
               my_video_player.pause();
-            }, 7000); // 3 sec + 4 sec = 7 sec
- // 2 sec ke baad dubara play
+            }, 7000);
+
+            // 9 sec pe wapas play kare
             setTimeout(function () {
               my_video_player.play();
-            }, 9000); // 7 sec + 2 sec = 9 sec
+            }, 9000);
 
-            
+            // 20 sec baad page reload ho
+            setTimeout(function () {
+              location.reload();
+            }, 10000);
           }
         });
       };
 
-      // Load Facebook SDK
+      // Facebook SDK load kare
       (function (d, s, id) {
         var js,
           fjs = d.getElementsByTagName(s)[0];
@@ -65,4 +69,4 @@
       })(document, 'script', 'facebook-jssdk');
     </script>
   </body>
-</html>
+</
