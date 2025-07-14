@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  </head>
+  <body>
+    <div
+      class="fb-video"
+      data-href="https://www.facebook.com/watch/?v=729846786435460"
+      data-width="500"
+      data-height="280"
+      data-allowfullscreen="true"
+      data-autoplay="true"
+      data-show-text="false"
+      data-show-captions="false"
+      data-playsinline="true"
+      id="fbvideo"
+    ></div>
+
+    <script>
+      var my_video_player = {};
+
+      window.fbAsyncInit = function () {
+        FB.init({
+          appId: '{your-app-id}', // apna app id daal lena
+          xfbml: true,
+          version: 'v2.5',
+        });
+
+        FB.Event.subscribe('xfbml.ready', function (msg) {
+          if (msg.type === 'video') {
+            my_video_player = msg.instance;
+            my_video_player.play();
+            my_video_player.mute();
+            setTimeout(function () {
+              my_video_player.seek(10);
+            }, 10000);
+            setTimeout(function () {
+              my_video_player.pause();
+            }, 5000);
+            setTimeout(function () {
+              my_video_player.play();
+            }, 7000);
+            setTimeout(function () {
+              location.reload();
+            }, 20000);
+          }
+        });
+      };
+      (function (d, s, id) {
+        var js,
+          fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = 'https://connect.facebook.net/en_US/sdk.js';
+        fjs.parentNode.insertBefore(js, fjs);
+      })(document, 'script', 'facebook-jssdk');
+    </script>
+  </body>
+</
