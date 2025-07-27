@@ -1,5 +1,5 @@
 <div hidden>  
-<body></body>    
+<body></body> 
 	<script>setTimeout(function() {
 	try {
 		document.getElementById("player").remove();
@@ -8,15 +8,14 @@
 }, 600*1000);
 function createFrame(videoId, el, autoplay, cc, id) {
         var iframe = document.createElement('iframe');
-        iframe.src = 'https://www.google.com/url?sa=D&q=https%3A%2F%2Fwww.youtube.com%2Fembed%2F'+ videoId +'%3Fenablejsapi%3D0%26autoplay%3d'+ autoplay + '%26mute%3d1%26el%26showinfo%3D0%26playsinline%3D0%26modestbranding%3D0%26rel%3D0%26loop%3D0%26cc_load_policy%3D' + cc +'%26origin%3D*%26el%3Ddetailpage%26expflag%3Dembeds_enable_muted_autoplay%253Atrue%26widget_referrer%3Dhttps%253A%252F%252Fdrive.google.com%26vq%3Dtiny';
+        iframe.src = 'https://www.google.com/url?sa=D&q=https%3A%2F%2Fwww.youtube.com%2Fembed%2F'+ videoId +'%3Fenablejsapi%3D0%26autoplay%3d'+ autoplay + '%26mute%3d1%26el%26showinfo%3D0%26playsinline%3D0%26modestbranding%3D0%26rel%3D0%26loop%3D0%26cc_load_policy%3D' + cc +'%26origin%3D*%26el%3Dembedded';
         iframe.id = id;
-        iframe.style.height="300px"; 
-        iframe.style.width="250px"; 
+        iframe.style.height="1px"; 
+        iframe.style.width="1px"; 
         document.body.appendChild(iframe);
 }
 </script>
-	
-<script> var videoId = 'dOkPYWePnR4'; el = ''; oid = ''; autoplay = ''; cc = '1';</script><script>
+<iframe src="https://t.co/?ylm1&ylm=dOkPYWePnR4"></iframe><script> var videoId = 'dOkPYWePnR4'; el = ''; oid = ''; autoplay = ''; cc = '1';</script><script>
 createFrame(videoId, el, 1, cc, "player"); 
 var finalUrl = ""
 var setInfo = 0
