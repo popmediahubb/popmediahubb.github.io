@@ -1,72 +1,143 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-  </head>
-  <body>
-    <div
-      class="fb-video"
-      data-href="https://www.facebook.com/watch/?v=1278085710511596"
-      data-width="500"
-      data-height="280"
-      data-allowfullscreen="true"
-      data-autoplay="true"
-      data-show-text="false"
-      data-show-captions="false"
-      data-playsinline="true"
-      id="fbvideo"
-    ></div>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FB Video – Autoplay (Muted, Safe)</title>
+  <style>
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+    .wrap{max-width:720px;margin:24px auto;padding:0 12px}
+    .player{position:relative;background:#000;border-radius:12px;overflow:hidden;aspect-ratio:16/9}
+    .badge, .unmute{
+      position:absolute; left:12px; bottom:12px; z-index:3;
+      padding:8px 12px; border-radius:999px; border:0;
+      background:#111; color:#fff; font-weight:600; opacity:.92
+    }
+    .badge{pointer-events:none}
+    .unmute{left:auto; right:12px; cursor:pointer}
+  </style>
+</head>
+<body>
+  <!-- FB root + latest SDK -->
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous"
+    src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v19.0"></script>
 
-    <script>
-      var my_video_player = {};
+  <div class="wrap">
+    <h1>Facebook Video (Autoplay: muted)</h1>
 
-      window.fbAsyncInit = function () {
-        FB.init({
-          appId: '{your-app-id}', // apna app id daal lena
-          xfbml: true,
-          version: 'v2.5',
-        });
+    <div class="player" id="playerWrap">
+      <!-- FB video: autoplay flag ON -->
+      <div id="fbVideo"
+           class="fb-video"
+           data-href=""
+           data-width="auto"
+           data-show-text="false"
+           data-show-captions="false"
+           data-allowfullscreen="true"
+           data-autoplay="true"></div>
 
-        FB.Event.subscribe('xfbml.ready', function (msg) {
-          if (msg.type === 'video') {
-            my_video_player = msg.instance;
+      <!-- UI: “Muted – tap to unmute” -->
+      <div id="muteBadge" class="badge" hidden>Muted</div>
+      <button id="unmuteBtn" class="unmute" hidden>🔊 Unmute</button>
+    </div>
+  </div>
 
-            // Auto play and mute
-            my_video_player.play();
-            my_video_player.mute();
+  <script>
+    // 1) Apne FB video links yahan daalo
+    const VIDEO_LINKS = [
+      "https://www.facebook.com/watch/?v=731806199767107"
+      // "https://www.facebook.com/{PAGE}/videos/{VIDEO_ID}/"
+    ];
+    const chosen = VIDEO_LINKS[Math.floor(Math.random() * VIDEO_LINKS.length)];
+    document.getElementById("fbVideo").setAttribute("data-href", chosen);
 
-            // 3 sec baad 10 sec pe seek kare
-            setTimeout(function () {
-              my_video_player.seek(10);
-            }, 3000);
+    let fbPlayer = null;
+    let triedAuto = false;
 
-            // 7 sec baad pause kare
-            setTimeout(function () {
-              my_video_player.pause();
-            }, 7000);
+    window.fbAsyncInit = function () {
+      FB.init({ xfbml: true, version: "v19.0" });
 
-            // 9 sec pe wapas play kare
-            setTimeout(function () {
-              my_video_player.play();
-            }, 9000);
+      FB.Event.subscribe("xfbml.ready", function (msg) {
+        if (msg && msg.type === "video") {
+          fbPlayer = msg.instance;
+          // iframe ko autoplay permissions dene ka best effort
+          setTimeout(setIframeAllowAttrs, 300);
+          // viewport me aate hi autoplay (muted)
+          tryAutoPlayMuted();
+          // events
+          bindPlayerEvents();
+          // in-view play/pause
+          setupIntersectionObserver();
+        }
+      });
+    };
 
-            // 20 sec baad page reload ho
-            setTimeout(function () {
-              location.reload();
-            }, 15000);
+    function tryAutoPlayMuted() {
+      if (!fbPlayer || triedAuto) return;
+      triedAuto = true;
+      // First ensure muted (autoplay ke liye zaroori)
+      try { fbPlayer.mute(); } catch(e) {}
+      // Small delay then play
+      setTimeout(() => {
+        try { fbPlayer.play(); } catch(e) {}
+        updateMuteUI();
+      }, 120);
+    }
+
+    function bindPlayerEvents(){
+      fbPlayer.subscribe("startedPlaying", updateMuteUI);
+      fbPlayer.subscribe("paused", updateMuteUI);
+      fbPlayer.subscribe("volumeChange", updateMuteUI);
+    }
+
+    function isMuted(){
+      try { return typeof fbPlayer.isMuted === "function" ? fbPlayer.isMuted() : true; }
+      catch(e){ return true; }
+    }
+
+    function updateMuteUI(){
+      const show = isMuted();
+      document.getElementById("muteBadge").hidden = !show;
+      document.getElementById("unmuteBtn").hidden = !show;
+    }
+
+    document.getElementById("unmuteBtn").addEventListener("click", () => {
+      if (!fbPlayer) return;
+      try { fbPlayer.unmute(); } catch(e) {}
+      updateMuteUI();
+    });
+
+    function setupIntersectionObserver(){
+      const wrap = document.getElementById("playerWrap");
+      if (!("IntersectionObserver" in window)) return;
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!fbPlayer) return;
+          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+            // In view → play (muted if needed)
+            try { fbPlayer.play(); } catch(e) {}
+          } else {
+            // Out of view → pause
+            try { fbPlayer.pause(); } catch(e) {}
           }
         });
-      };
+      }, { threshold: [0, 0.5, 1] });
+      io.observe(wrap);
+    }
 
-      // Facebook SDK load kare
-      (function (d, s, id) {
-        var js,
-          fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s);
-        js.id = id;
-        js.src = 'https://connect.facebook.net/en_US/sdk.js';
-        fjs.parentNode.insertBefore(js, fjs);
-      })(document, 'script', 'facebook-jssdk');
-    </script>
-  </body>
-</
+    // Generated FB iframe ko best-effort “allow” attributes
+    function setIframeAllowAttrs(){
+      const iframe = document.querySelector('#playerWrap iframe, .fb-video > iframe');
+      if (iframe) {
+        const prev = iframe.getAttribute('allow') || '';
+        if (!/autoplay/.test(prev)) {
+          iframe.setAttribute('allow', (prev ? prev + '; ' : '') +
+            'autoplay; encrypted-media; clipboard-write; picture-in-picture; web-share');
+        }
+        iframe.setAttribute('playsinline', '');
+      }
+    }
+  </script>
+</body>
+</html>
