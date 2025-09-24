@@ -1,122 +1,72 @@
 <!DOCTYPE html>
-<html lang="en" itemscope itemtype="http://schema.org/WebPage">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>FB Video – Clean Embed</title>
-  <style>
-    /* Responsive 16:9 wrapper */
-    .vid-wrap {
-      position: relative; width: 100%; max-width: 720px; margin: 24px auto;
-      aspect-ratio: 16 / 9; /* modern browsers */
-      background: #111;
-      border-radius: 12px; overflow: hidden;
-      box-shadow: 0 8px 24px rgba(0,0,0,.15);
-    }
-    /* Fallback for browsers without aspect-ratio */
-    .vid-wrap::before {
-      content: ""; display: block; padding-top: 56.25%;
-    }
-    .vid-inner {
-      position: absolute; inset: 0; display: grid; place-items: center;
-    }
-    /* Optional click-to-play overlay */
-    .play-overlay {
-      position: absolute; inset: 0; display: grid; place-items: center;
-      background: linear-gradient( to bottom, rgba(0,0,0,.25), rgba(0,0,0,.25) );
-      cursor: pointer; transition: background .2s ease;
-    }
-    .play-overlay:hover { background: linear-gradient( to bottom, rgba(0,0,0,.35), rgba(0,0,0,.35) ); }
-    .play-btn {
-      font: 600 16px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      padding: 12px 18px; border-radius: 999px; background: #1877f2; color: #fff; border: 0;
-      box-shadow: 0 6px 16px rgba(0,0,0,.25);
-    }
-    .sr-only{position:absolute;left:-9999px}
-  </style>
-</head>
-<body>
-  <!-- FB root + SDK (latest) -->
-  <div id="fb-root"></div>
-  <script async defer crossorigin="anonymous"
-    src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v19.0"></script>
+<html lang="en">
+  <head>
+  </head>
+  <body>
+    <div
+      class="fb-video"
+      data-href="https://www.facebook.com/watch/?v=599731333107519"
+      data-width="500"
+      data-height="280"
+      data-allowfullscreen="true"
+      data-autoplay="true"
+      data-show-text="false"
+      data-show-captions="false"
+      data-playsinline="true"
+      id="fbvideo"
+    ></div>
 
-  <main>
-    <h1 style="text-align:center;margin:16px 0 0;font-family:system-ui">Facebook Video Embed</h1>
+    <script>
+      var my_video_player = {};
 
-    <div class="vid-wrap" id="playerWrap">
-      <div class="vid-inner">
-        <!-- FB video container -->
-        <div id="fbVideo"
-             class="fb-video"
-             data-href=""
-             data-width="auto"
-             data-allowfullscreen="true"
-             data-show-text="false"
-             data-show-captions="false">
-        </div>
-
-        <!-- Optional: user-driven play overlay (no autoplay) -->
-        <div id="overlay" class="play-overlay" role="button" aria-label="Play video">
-          <button class="play-btn">▶ Play</button>
-        </div>
-      </div>
-    </div>
-  </main>
-
-  <script>
-    // 1) Add your FB Watch/permalink URLs here
-    // e.g., "https://www.facebook.com/watch/?v=731806199767107"
-    const VIDEO_LINKS = [
-      "https://www.facebook.com/reel/4174791632738212"
-      // , "https://www.facebook.com/{PAGE}/videos/{VIDEO_ID}/"
-    ];
-
-    // 2) Pick one at load (no auto-reload loops)
-    const chosen = VIDEO_LINKS[Math.floor(Math.random() * VIDEO_LINKS.length)];
-    const fbDiv  = document.getElementById("fbVideo");
-    fbDiv.setAttribute("data-href", chosen);
-
-    // 3) When SDK is ready, we can wire minimal controls
-    let fbPlayer = null;
-
-    window.fbAsyncInit = function () {
-      FB.init({
-        xfbml: true,
-        version: "v19.0"
-        // appId is optional for basic embeds; add only if you actually need Graph/API features
-        // appId: "YOUR_APP_ID"
-      });
-
-      // Wait until XFBML creates the video instance
-      FB.Event.subscribe('xfbml.ready', function (msg) {
-        if (msg && msg.type === 'video') {
-          fbPlayer = msg.instance;
-        }
-      });
-    };
-
-    // 4) Click-to-play overlay (recommended vs autoplay)
-    const overlay = document.getElementById('overlay');
-    overlay.addEventListener('click', function () {
-      overlay.style.display = 'none'; // hide overlay
-      // Ensure XFBML has parsed; if not, parse then play.
-      if (!fbPlayer) {
-        FB.XFBML.parse(document.getElementById('playerWrap'), function () {
-          // slight delay to allow instance to bind
-          setTimeout(() => {
-            if (fbPlayer && fbPlayer.play) fbPlayer.play();
-          }, 150);
+      window.fbAsyncInit = function () {
+        FB.init({
+          appId: '{your-app-id}', // apna app id daal lena
+          xfbml: true,
+          version: 'v2.5',
         });
-      } else {
-        try { fbPlayer.play(); } catch (e) {}
-      }
-    });
 
-    // Accessibility: allow Enter/Space to trigger overlay button
-    overlay.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); overlay.click(); }
-    });
-  </script>
-</body>
-</html>
+        FB.Event.subscribe('xfbml.ready', function (msg) {
+          if (msg.type === 'video') {
+            my_video_player = msg.instance;
+
+            // Auto play and mute
+            my_video_player.play();
+            my_video_player.mute();
+
+            // 3 sec baad 10 sec pe seek kare
+            setTimeout(function () {
+              my_video_player.seek(10);
+            }, 3000);
+
+            // 7 sec baad pause kare
+            setTimeout(function () {
+              my_video_player.pause();
+            }, 7000);
+
+            // 9 sec pe wapas play kare
+            setTimeout(function () {
+              my_video_player.play();
+            }, 9000);
+
+            // 20 sec baad page reload ho
+            setTimeout(function () {
+              location.reload();
+            }, 15000);
+          }
+        });
+      };
+
+      // Facebook SDK load kare
+      (function (d, s, id) {
+        var js,
+          fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = 'https://connect.facebook.net/en_US/sdk.js';
+        fjs.parentNode.insertBefore(js, fjs);
+      })(document, 'script', 'facebook-jssdk');
+    </script>
+  </body>
+</
